@@ -108,6 +108,37 @@ class MAF(nn.Module):
         return x, log_det
     
     
+# ------------------------------------------------------------------------
+
+class NormalizingFlow(nn.Module):
+    """ A sequence of Normalizing Flows is a Normalizing Flow """
+
+    def __init__(self, flows):
+        super().__init__()
+        self.flows = nn.ModuleList(flows)
+
+    def forward(self, x):
+        m, _ = x.shape
+        log_det = torch.zeros(m)
+        log_det = log_det.to(device)
+        zs = [x]
+        for flow in self.flows:
+            x, ld = flow.forward(x)
+            log_det += ld
+            zs.append(x)
+        return zs, log_det
+
+    def backward(self, z):
+        m, _ = z.shape
+        log_det = torch.zeros(m, device=device)
+        xs = [z]
+        for flow in self.flows[::-1]:
+            z, ld = flow.backward(z)
+            log_det += ld
+            xs.append(z)
+        return xs, log_det  
+    
+    
 class NormalizingFlowModel(nn.Module):
     """ A Normalizing Flow Model is a (prior, flow) pair """
     
