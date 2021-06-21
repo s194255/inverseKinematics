@@ -322,9 +322,14 @@ class noRoot_gauss:
         return newDict
 
     def eval(self, motion):
+        """
+        :param motion: a joint angle dictionary
+        :return: the density of that jont angle dictionary
+        """
         tens = self.dict_to_tensor(motion)
         tens = (tens - self.mu) / self.stds
         tens = tens[0, :]
+        # evaluating log_prob of tens
         return self.normdist.log_prob(tens)
 
     def sample(self, num_sampes=5):
