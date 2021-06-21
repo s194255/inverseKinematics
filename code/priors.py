@@ -1,7 +1,6 @@
 import torch
 import numpy as np
-from Normalizing_flows.flows import MAF, NormalizingFlowModel
-from Normalizing_flows.homemade_flows import planar, normalizeModel
+from Normalizing_flows.flows import MAF, NormalizingFlowModel, planar, normalizeModel
 from torch.optim.lr_scheduler import StepLR
 import copy
 

@@ -16,8 +16,8 @@ Root_path = 'experiment1/run6/'
 logPath = 'experiment1/run6/logs.txt'
 sigma = 0.1
 lr = 0.5
-NF_nitts = 10001
-invKin_nitts = 2001
+NF_nitts = 1
+invKin_nitts = 1
 drawImages = False
 log = True
 K=7
@@ -72,23 +72,23 @@ movementTypes = ["walking", "running", "boxing"]
 
 
 #Walking data
-dataPath = glob.glob('../data/subjects/Walking/*.amc')
+dataPath = glob.glob('../data/Walking/*.amc')
 walkingData = amc.getFrameslist(dataPath)
 
 #Running data
-dataPath = glob.glob('../data/subjects/Running/*.amc')
+dataPath = glob.glob('../data/Running/*.amc')
 runningData = amc.getFrameslist(dataPath)
 
 #Boxing data
-dataPath = glob.glob('../data/subjects/Boxing/*.amc')
+dataPath = glob.glob('../data/Boxing/*.amc')
 boxingData = amc.getFrameslist(dataPath)
 
 dataList = [walkingData, runningData, boxingData]
 
 #ASF files for each dataset
-walkingJoints = amc.parse_asf('../data/subjects/Walking/35.asf')
-runningJoints = amc.parse_asf('../data/subjects/Running/16.asf')
-boxingJoints = amc.parse_asf('../data/subjects/Boxing/14.asf')
+walkingJoints = amc.parse_asf('../data/Walking/35.asf')
+runningJoints = amc.parse_asf('../data/Running/16.asf')
+boxingJoints = amc.parse_asf('../data/Boxing/14.asf')
 
 asfList = [walkingJoints,runningJoints,boxingJoints]
 
