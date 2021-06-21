@@ -11,7 +11,7 @@ import numpy as np
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def invKin(prior, current_pose, goal_pos, jointType, joints, logPath=None, verbose=True, log=False, sigma=10, lr=0.01, nitts=5*10**3+1):
+def invKin(prior, current_pose, goal_pos, jointType, joints, verbose=True, sigma=10, lr=0.01, nitts=5*10**3+1):
     """
     Explanation of arguments for invKin:
         prior: the prior used in the maximum a posteriori loop
@@ -51,12 +51,4 @@ def invKin(prior, current_pose, goal_pos, jointType, joints, logPath=None, verbo
                 print("Prior loss = ", round(-prior_loss.item(),4))
                 print("Likelihood = ", round(likelihood.item(),4))
                 print("Euclidean distance = ", round(np.sqrt(float(sum([torch.matmul((goal_pos[k] - curr_pos[k]).T, (goal_pos[k] - curr_pos[k])).item() for k in range(len(goal_pos))]))),4), "\n")
-                
-                lines = ["Iterations:" + str(i),"-----------------\n", "Posterior loss = " + str(round(loss.item(),4))+"\n"
-                         ,"Prior loss = " + str(round(-prior_loss.item(),4))+"\n","Likelihood = " + str(round(likelihood.item(),4))+"\n"
-                         ,"Likelihood = " + str(round(likelihood.item(),4))+"\n", "Euclidean distance = " + str(round(float(sum([torch.matmul((goal_pos[k] - curr_pos[k]).T, (goal_pos[k] - curr_pos[k])).item() for k in range(len(goal_pos))])),4))+"\n", "\n" ]
-                if log:
-                    with open(logPath, 'a') as f:
-                        f.writelines(lines)
-                        f.close()
     return current_pose

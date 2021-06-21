@@ -13,13 +13,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 #Hyperparameters
 Root_path = 'experiment1/run6/'
-logPath = 'experiment1/run6/logs.txt'
 sigma = 0.1
 lr = 0.5
 NF_nitts = 1
 invKin_nitts = 1
 drawImages = False
-log = True
 K=7
 flowtype = "MAF"
 
@@ -156,7 +154,7 @@ def saveMotion(motion, path, fileName):
       
        
 
-def Experiment1(Goal_points, Joint_names, motion, asfList, priorList, movementTypes, rootPath, drawImages, log, logpath, sigma, lr, nitts = 500):
+def Experiment1(Goal_points, Joint_names, motion, asfList, priorList, movementTypes, rootPath, drawImages, sigma, lr, nitts = 500):
     """
     Parameters
     ----------
@@ -166,10 +164,8 @@ def Experiment1(Goal_points, Joint_names, motion, asfList, priorList, movementTy
     asfList : list containing all necessary skeletons loaded from asf-files
     priorList : list of trained priors to be used for MAP
     movementTypes : list of datasets that are supposed to be used
-    rootPath : base path for multiple purposes such as saving poses and logs
+    rootPath : base path for multiple purposes such as saving poses
     drawImages : Determines if poses should be plottet imidiately
-    log : TToggles if logs of loss should be saved
-    logpath : path for the log of loss values
     sigma : Hyperparameter that determines the priorities of likelihood and prior while doing MAP.
     lr : Learning rate for invKin
     nitts : Iterations for invKin
@@ -190,8 +186,8 @@ def Experiment1(Goal_points, Joint_names, motion, asfList, priorList, movementTy
                     motionClone[key] = tensorclone
                 #Create pose    
                 outputPose = invKin(prior=priorList[c][k], current_pose=motionClone, goal_pos=Goal_points[i],
-                                    jointType=[Joint_names[i]], joints=asfList[k], logPath=logPath, sigma=sigma,
-                                    lr=lr, nitts = nitts, log=True, verbose=True)
+                                    jointType=[Joint_names[i]], joints=asfList[k], sigma=sigma,
+                                    lr=lr, nitts = nitts, verbose=True)
                 #save pose
                 saveMotion(outputPose, os.path.join(rootPath, priorTypes[c]), str(movementTypes[k] + "_" + Joint_names[i] + "_" + str(1+i%2)))
                 if drawImages == True:
@@ -199,5 +195,5 @@ def Experiment1(Goal_points, Joint_names, motion, asfList, priorList, movementTy
                     asfList[k]["root"].draw()
                 
 if __name__ == "__main__":
-    Experiment1(Goal_points, Joint_names, zero_motion, asfList, priorList, movementTypes, Root_path, drawImages, log, logPath,
+    Experiment1(Goal_points, Joint_names, zero_motion, asfList, priorList, movementTypes, Root_path, drawImages,
                 sigma=sigma, lr=lr, nitts = invKin_nitts )
