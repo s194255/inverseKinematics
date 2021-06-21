@@ -27,7 +27,9 @@ specifically the flows.py file. made.py and nets.py also originate there. The MA
 ## GIFs for the survey
 In our project, GIFs was made using the files gifmaker.py
 The first part of the survey (experiment 1) had users determine if a single pose was natural or not given a context pose. Example:
+
 ![](https://github.com/s194255/inverseKinematics/blob/main/data/Gifs/exp1_NF_boxing.gif)
 
 The second part of the survey (experiment 2) had users determine if a single pose was natural or not. Example:
+
 ![](https://github.com/s194255/inverseKinematics/blob/main/data/Gifs/exp2_Gauss_running.gif)
