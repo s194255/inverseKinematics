@@ -28,6 +28,21 @@ flowtype = "MAF"
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 def Experiment_2(prior, inputPose, goal_pos, endPose, joints, jointType, saveRootPath, movementType, priorType, indeks):
+    """
+
+        :param prior: the prior used (object)
+        :param inputPose: the input pose taken from test data (dict)
+        :param target_positions: the position of the end effector in Cartesian coordinates (list of 3x1 tensors)
+        :param endPose: the end pose taken from test data (dict)
+        :param joints: list of joints objects (list)
+        :param jointType: the end effector being used (as  list with just one strings)
+        :param saveRootPath: the root path where pickles are saved (as string)
+        :param movementType: The activity used (as string)
+        :param priorType: the type of prior used (as string)
+        :param indeks: the index of test file for which the end pose was taken (as int)
+        :return: None
+        : saves the input pose from data, the generated pose and the end pose from data
+        """
     print("-----------------Initial pose------------------------")
     print("jointType = ", jointType)
     if drawImages:
@@ -56,6 +71,10 @@ def Experiment_2(prior, inputPose, goal_pos, endPose, joints, jointType, saveRoo
 
 
 def copyDict(dicct):
+    """
+    :param dicct: dicct of joint angles
+    :return: A cloned version of dicct
+    """
     dicct_ny = {}
     for key in dicct:
         dicct_ny[key] = dicct[key].detach().clone()
@@ -63,6 +82,11 @@ def copyDict(dicct):
 
 
 def getPose(test_amc_path, indeks):
+    """
+    :param test_amc_path: path to test amc file (as string)
+    :param indeks: index for which a poses is wished retreived (as int)
+    :return: The pose of test_amc file relating to that index
+    """
     motions = amc.parse_amc(test_amc_path)
 
     motions[indeks]['root'][:3] = torch.tensor([0.0, 0.0, 0.0], device=device)
@@ -78,6 +102,16 @@ def getPose(test_amc_path, indeks):
 
 
 def getGoalposes(test_amc_path, test_asf_path, jointType, indekser):
+    """
+    :param test_amc_path: path to test amc file
+    :param test_asf_path: path to test asf file
+    :param jointType: the end effector (as list of strings)
+    :param indekser: indices (list of ints)
+    :return: Retreiving the end effector target position of the test_amc_path relating to
+    specified indices, relating to the specified end effectors. The returned data type
+    is list in list. Has to be index as goal_pos_list[jointType][index]. Also returns the
+    endPose
+    """
     joints = amc.parse_asf(test_asf_path)
     motions = amc.parse_amc(test_amc_path)
 
@@ -99,6 +133,12 @@ def getGoalposes(test_amc_path, test_asf_path, jointType, indekser):
 
 
 def saveMotion(motion, path, fileName):
+    """
+    :param motion: A joint angle dictionary
+    :param path: A path (wihtout filename)
+    :param fileName: The filename
+    :return:
+    """
     motionClone =  {}
     for key in motion:
         tensorclone = motion[key].clone()
@@ -113,6 +153,11 @@ def saveMotion(motion, path, fileName):
 
 
 def getPrior(priorType, train_path):
+    """
+    :param priorType: The type of prior (as string)
+    :param train_path: The train_paths (list of training files)
+    :return: A trained prior object
+    """
     frameslist = amc.getFrameslist(train_path)
     if priorType == "NF":
         prior = noRoot_NF(frameslist, flowtype=flowtype, K=K,
@@ -127,6 +172,10 @@ def getPrior(priorType, train_path):
     return prior
 
 def changePathstyle(paths):
+    """
+    :param paths: List of paths with \\'s
+    :return: list of paths with only /'s
+    """
     changedPaths = []
     for path in paths:
         changedPath = path.replace("\\", "/")
