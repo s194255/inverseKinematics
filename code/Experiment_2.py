@@ -12,13 +12,13 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 import glob
 import pickle
 from priors import noRoot_gauss, noRoot_NF, zeroPrior
-from Test_on_data import invKin
+from invKin import invKin
 
 # hyperparametre
 sigma = 1
 K = 7
-NF_training_nitts = 30000
-invKin_nitts = 10000
+NF_training_nitts = 1
+invKin_nitts = 1
 learning_rate = 0.1
 saveRootPath = "experiment2/run5"
 drawImages = False
@@ -143,12 +143,12 @@ if __name__ == "__main__":
     jointTyper = ["rhand", "lfoot"]
     bevægelser = ["walking", "running", "boxing"]
 
-    dataPaths = {"walking": (glob.glob('../data/subjects/Walking/*.amc'), "../data/subjects/Walking/16_30.amc",
-                             '../data/subjects/Walking/35.asf'),
-                 "running": (glob.glob('../data/subjects/Running/*.amc'), "../data/subjects/Running/16_49.amc",
-                             '../data/subjects/Running/16.asf'),
-                 "boxing": (glob.glob('../data/subjects/Boxing/*.amc'), "../data/subjects/Boxing/13_18.amc",
-                            '../data/subjects/Boxing/14.asf')}
+    dataPaths = {"walking": (glob.glob('../data/Walking/*.amc'), "../data/Walking/16_30.amc",
+                             '../data/Walking/35.asf'),
+                 "running": (glob.glob('../data/Running/*.amc'), "../data/Running/16_49.amc",
+                             '../data/Running/16.asf'),
+                 "boxing": (glob.glob('../data/Boxing/*.amc'), "../data/Boxing/13_18.amc",
+                            '../data/Boxing/14.asf')}
 
     for bevægelse in bevægelser:
         dataPaths_train, dataPath_test, asf_path = dataPaths[bevægelse]
